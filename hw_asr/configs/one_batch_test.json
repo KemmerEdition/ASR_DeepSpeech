@@ -15,7 +15,7 @@
     "spectrogram": []
   },
   "arch": {
-    "type": "BaselineModel",
+    "type": "DeepSpeech",
     "args": {
       "n_feats": 128,
       "fc_hidden": 512
@@ -29,10 +29,10 @@
         {
           "type": "LibrispeechDataset",
           "args": {
-            "part": "dev-clean",
-            "max_audio_length": 20.0,
+            "part": "train-clean-100",
+            "max_audio_length": 10.0,
             "max_text_length": 200,
-            "limit": 10
+            "limit": -1
           }
         }
       ]
@@ -45,18 +45,19 @@
           "type": "LibrispeechDataset",
           "args": {
             "part": "dev-clean",
-            "max_audio_length": 20.0,
+            "max_audio_length": 10.0,
             "max_text_length": 200,
-            "limit": 10
+            "limit": -1
           }
         }
       ]
     }
   },
   "optimizer": {
-    "type": "SGD",
+    "type": "Adam",
     "args": {
-      "lr": 1e-2
+      "lr": 3e-4,
+      "weight_decay": 1e-5
     }
   },
   "loss": {
