@@ -15,7 +15,7 @@
     "spectrogram": []
   },
   "arch": {
-    "type": "DeepSpeech",
+    "type": "Model_For_Overfit",
     "args": {
       "n_feats": 128,
       "fc_hidden": 512
@@ -23,31 +23,31 @@
   },
   "data": {
     "train": {
-      "batch_size": 10,
+      "batch_size": 20,
       "num_workers": 0,
       "datasets": [
         {
           "type": "LibrispeechDataset",
           "args": {
             "part": "train-clean-100",
-            "max_audio_length": 10.0,
+            "max_audio_length": 20.0,
             "max_text_length": 200,
-            "limit": -1
+            "limit": 20
           }
         }
       ]
     },
     "val": {
-      "batch_size": 10,
+      "batch_size": 20,
       "num_workers": 0,
       "datasets": [
         {
           "type": "LibrispeechDataset",
           "args": {
             "part": "dev-clean",
-            "max_audio_length": 10.0,
+            "max_audio_length": 20.0,
             "max_text_length": 200,
-            "limit": -1
+            "limit": 20
           }
         }
       ]
@@ -89,7 +89,7 @@
     }
   },
   "trainer": {
-    "epochs": 50,
+    "epochs": 100,
     "save_dir": "saved/",
     "save_period": 5,
     "verbosity": 2,
@@ -97,7 +97,7 @@
     "early_stop": 100,
     "visualize": "wandb",
     "wandb_project": "asr_project",
-    "len_epoch": 100,
+    "len_epoch": 50,
     "grad_norm_clip": 10
   }
 }
