@@ -3,7 +3,7 @@ import torch.nn.functional as F
 from hw_asr.base import BaseModel
 
 
-class DeepSpeech(BaseModel):
+class DeepSpeechLSTM(BaseModel):
     def __init__(self, n_feats, n_class, fc_hidden=512, **batch):
         super().__init__(n_feats, n_class, **batch)
 
@@ -35,7 +35,7 @@ class DeepSpeech(BaseModel):
         x = self.fc_3(x)
         x = F.relu(x)
         x = F.hardtanh(x, 0, 20)
-        x = x.squeeze(1).transpose(0, 1)
+        x = x.squeeze(0).transpose(0, 1)
 
         x, y = self.lstm(x)
         x = x[:, :, :self.hid] + x[:, :, self.hid:]
