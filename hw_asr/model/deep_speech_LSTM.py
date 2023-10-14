@@ -7,11 +7,16 @@ class DeepSpeechLSTM(BaseModel):
     def __init__(self, n_feats, n_class, fc_hidden=512, **batch):
         super().__init__(n_feats, n_class, **batch)
 
-        self.fc_1 = nn.Linear(in_features=n_feats, out_features=fc_hidden)
-        self.fc_2 = nn.Linear(in_features=fc_hidden, out_features=fc_hidden)
-        self.fc_3 = nn.Linear(in_features=fc_hidden, out_features=fc_hidden)
-        self.fc_4 = nn.Linear(in_features=fc_hidden, out_features=fc_hidden)
-        self.fc_5 = nn.Linear(in_features=fc_hidden, out_features=n_class)
+        self.fc_1 = nn.Linear(in_features=n_feats,
+                              out_features=fc_hidden)
+        self.fc_2 = nn.Linear(in_features=fc_hidden,
+                              out_features=fc_hidden)
+        self.fc_3 = nn.Linear(in_features=fc_hidden,
+                              out_features=fc_hidden)
+        self.fc_4 = nn.Linear(in_features=fc_hidden,
+                              out_features=fc_hidden)
+        self.fc_5 = nn.Linear(in_features=fc_hidden,
+                              out_features=n_class)
         self.dropout = nn.Dropout(p=0.1)
         # self.act_func_1 = nn.ReLU()s
         # self.act_func_2 = nn.Hardtanh()

@@ -16,7 +16,7 @@
     "spectrogram": []
   },
   "arch": {
-    "type": "DeepSpeechGRU",
+    "type": "DeepSpeech2",
     "args": {
       "n_feats": 64,
       "fc_hidden": 512

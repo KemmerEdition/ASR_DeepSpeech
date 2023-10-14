@@ -3,7 +3,9 @@ from torch import Tensor
 import librosa
 import numpy as np
 from hw_asr.augmentations.base import AugmentationBase
-#based on the 3d seminar of DLA Course
+# based on the 3d seminar of DLA Course
+# также добавляем параметр вероятности
+
 
 class Noise(AugmentationBase):
     def __int__(self, p, noise_name, noise_level):
