@@ -4,6 +4,5 @@ from hw_asr.augmentations.spectrogram_augmentations.TimeMasking import TimeMaski
 
 __all__ = [
     "FrequencyMasking",
-    "TimeMasking",
-
+    "TimeMasking"
 ]

@@ -34,6 +34,10 @@ def main(config):
 
     # build model architecture, then print to console
     model = config.init_obj(config["arch"], module_arch, n_class=len(text_encoder))
+    if config["model_loaded"] != "":
+        uploaded = torch.load(config["model_loaded"])
+        model.load_state_dict(uploaded["state_dict"])
+        print('model was upload from', config["model_loaded"])
     logger.info(model)
 
     # prepare for (multi-device) GPU training

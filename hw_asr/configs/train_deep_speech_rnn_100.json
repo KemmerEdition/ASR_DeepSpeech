@@ -81,9 +81,21 @@
       }
     },
     {
+      "type": "BeamSearchLMMetricWER",
+      "args": {
+        "name": "WER (lm)"
+      }
+    },
+    {
       "type": "ArgmaxCERMetric",
       "args": {
         "name": "CER (argmax)"
+      }
+    },
+    {
+      "type": "BeamSearchLMMetricCER",
+      "args": {
+        "name": "CER (lm)"
       }
     }
   ],
@@ -108,5 +120,6 @@
     "wandb_project": "asr_project",
     "len_epoch": 150,
     "grad_norm_clip": 10
-  }
+  },
+  "model_loaded": ""
 }

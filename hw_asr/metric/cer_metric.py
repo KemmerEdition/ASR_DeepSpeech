@@ -47,19 +47,18 @@ class BeamSearchMetricCER(BaseMetric):
                 pred_text = self.text_encoder.decode(log_prob_vec[:length])
             cers.append(calc_cer(target_text, pred_text))
         return sum(cers) / len(cers)
-#
-# class BeamSearchLMMetricCER(BaseMetric):
-#     def __init__(self, text_encoder: CTCCharTextEncoder, beam_size: int = 10, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.text_encoder = text_encoder
-#         self.beam_size = beam_size
-#
-#     def __call__(self, log_probs: Tensor, log_probs_length: Tensor, text: List[str], beam_size: int, **kwargs):
-#         cers = []
-#         lengths = log_probs_length.detach().numpy()
-#         for log_prob, length, target_text in zip(log_probs, lengths, text):
-#             target_text = BaseTextEncoder.normalize_text(target_text)
-#             hypos = self.text_encoder.ctc_beam_search_from_liba(log_prob.detach().cpu().numpy(), length, beam_size)
-#             pred_text = hypos[0][0]
-#             cers.append(calc_cer(target_text, pred_text))
-#         return sum(cers) / len(cers)
+
+class BeamSearchLMMetricCER(BaseMetric):
+    def __init__(self, text_encoder: CTCCharTextEncoder, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.text_encoder = text_encoder
+
+    def __call__(self, log_probs: Tensor, log_probs_length: Tensor, text: List[str], **kwargs):
+        cers = []
+        lengths = log_probs_length.cpu().numpy()
+        log_probs = log_probs.detach().numpy()
+        for log_prob, length, target_text in zip(log_probs, lengths, text):
+            target_text = BaseTextEncoder.normalize_text(target_text)
+            pred_text = self.text_encoder.ctc_beam_search_from_liba(log_prob, length, 100)
+            cers.append(calc_cer(target_text, pred_text))
+        return sum(cers) / len(cers)

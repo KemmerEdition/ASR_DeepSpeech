@@ -22,9 +22,9 @@ class CTCCharTextEncoder(CharTextEncoder):
         self.ind2char = dict(enumerate(vocab))
         self.char2ind = {v: k for k, v in self.ind2char.items()}
 
-        # vocab_lm = ascii_lowercase + ' '
-        # self.kenlm = 'hw_asr/kenlm_model.arpa'
-        # self.beam_search = build_ctcdecoder([""] + [i for i in vocab_lm], kenlm_model_path=self.kenlm, alpha=0.5, beta=0.1)
+        vocab_lm = ascii_lowercase + ' '
+        self.kenlm = 'lowercase_3-gram.pruned.1e-7.arpa'
+        self.beam_search = build_ctcdecoder([""] + [i for i in vocab_lm], kenlm_model_path=self.kenlm, alpha=0.5, beta=0.1)
 
     def ctc_decode(self, inds: List[int]) -> str:
 
@@ -101,13 +101,13 @@ class CTCCharTextEncoder(CharTextEncoder):
         state_list.sort(key=lambda x: -x[1])
         return dict(state_list[:beam_size])
 
-    # def ctc_beam_search_from_liba(self, probs: torch.tensor, probs_length, beam_size: int = 100) -> List[Hypothesis]:
-    #
-    #     assert len(probs.shape) == 2
-    #     char_length, voc_size = probs.shape
-    #     assert voc_size == len(self.ind2char)
-    #
-    #     decoder = self.beam_search.decode_beams(probs[:probs_length, :], beam_size)
-    #     hypos = [(i[0], i[-1]) for i in decoder]
-    #
-    #     return sorted(hypos, key=lambda x: x.prob, reverse=True)
+    def ctc_beam_search_from_liba(self, probs: torch.tensor, probs_length, beam_size: int = 100) -> List[Hypothesis]:
+
+        assert len(probs.shape) == 2
+        char_length, voc_size = probs.shape
+        assert voc_size == len(self.ind2char)
+
+        decoder = self.beam_search.decode_beams(probs[:probs_length, :], beam_size)
+        hypos = [(i[0], i[-1]) for i in decoder]
+
+        return sorted(hypos, key=lambda x: x.prob, reverse=True)
