@@ -39,7 +39,9 @@
             "part": "train-clean-100",
             "max_audio_length": 50.0,
             "max_text_length": 500,
-            "limit":-1
+            "limit":-1,
+            "data_dir": "/kaggle/input/librispeech-asr-wav-dataset"
+
           }
 
         }
@@ -56,7 +58,8 @@
             "part": "dev-clean",
             "max_audio_length": 50.0,
             "max_text_length": 500,
-            "limit":-1
+            "limit":-1,
+            "data_dir": "/kaggle/input/librispeech-asr-wav-dataset"
           }
         }
       ]
