@@ -55,10 +55,13 @@ class BeamSearchLMMetricCER(BaseMetric):
 
     def __call__(self, log_probs: Tensor, log_probs_length: Tensor, text: List[str], **kwargs):
         cers = []
-        lengths = log_probs_length.cpu().numpy()
-        log_probs = log_probs.detach().numpy()
-        for log_prob, length, target_text in zip(log_probs, lengths, text):
+        lengths = log_probs_length.detach().numpy()
+        predictions = np.exp(log_probs.detach().cpu().numpy())
+        for log_prob_vec, length, target_text in zip(predictions, lengths, text):
             target_text = BaseTextEncoder.normalize_text(target_text)
-            pred_text = self.text_encoder.ctc_beam_search_from_liba(log_prob, length, 100)
+            if hasattr(self.text_encoder, "ctc_beam_search_from_liba"):
+                pred_text = self.text_encoder.ctc_beam_search_from_liba(log_prob_vec, length, 10)
+            else:
+                pred_text = self.text_encoder.decode(log_prob_vec[:length])
             cers.append(calc_cer(target_text, pred_text))
         return sum(cers) / len(cers)
