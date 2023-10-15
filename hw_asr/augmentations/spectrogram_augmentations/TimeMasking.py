@@ -4,7 +4,7 @@ from torch import Tensor
 import numpy as np
 
 
-class TimeMask(AugmentationBase):
+class TimeMasking(AugmentationBase):
     def __init__(self, p, time_mask_param, *args, **kwargs):
         self.p = p
         self.aug_time_mask = torchaudio.transforms.TimeMasking(time_mask_param)

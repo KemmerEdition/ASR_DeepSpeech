@@ -4,7 +4,7 @@ from torch import Tensor
 import numpy as np
 
 
-class FreqMask(AugmentationBase):
+class FrequencyMasking(AugmentationBase):
     def __init__(self, p, freq_mask_param, *args, **kwargs):
         self.p = p
         self.aug_freq = torchaudio.transforms.FrequencyMasking(freq_mask_param)
