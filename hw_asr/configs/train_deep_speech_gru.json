@@ -12,7 +12,7 @@
   },
   "augmentations": {
     "wave": [{"type": "Gain", "args": {"p": 0.1, "sample_rate": 16000}},
-             {"type": "PitchShift", "args": {"p": 0.1, "sample_rate": 16000, "n_steps": -3}},
+             {"type": "PitchShift", "args": {"p": 0.1, "sample_rate": 16000}},
              {"type": "Volume", "args": {"p":  0.1, "gain": 2.0, "gain_type": "amplitude"}},
              {"type": "Noise", "args": {"p": 0.1, "noise_name": "trumpet", "noise_level": 20}},
              {"type": "AddColoredNoise", "args": {"p": 0.1, "sample_rate": 16000}}],

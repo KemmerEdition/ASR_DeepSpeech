@@ -6,13 +6,20 @@
     "spectrogram": {
       "type": "MelSpectrogram",
       "args": {
+
       }
     },
     "log_spec": true
   },
   "augmentations": {
-    "wave": [],
-    "spectrogram": []
+    "wave": [{"type": "Gain", "args": {"p": 0.1, "sample_rate": 16000}},
+             {"type": "PitchShift", "args": {"p": 0.1, "sample_rate": 16000}},
+             {"type": "Volume", "args": {"p":  0.1, "gain": 2.0, "gain_type": "amplitude"}},
+             {"type": "Noise", "args": {"p": 0.1, "noise_name": "trumpet", "noise_level": 20}},
+             {"type": "AddColoredNoise", "args": {"p": 0.1, "sample_rate": 16000}}],
+    "spectrogram": [{"type": "FrequencyMasking", "args": {"p": 0.1, "freq_mask_param": 15}},
+                    {"type": "TimeMasking", "args": {"p": 0.1, "time_mask_param": 25}},
+                    {"type": "TimeStretch", "args": {"p": 0.1, "fix_rate": 1.2}}]
   },
   "arch": {
     "type": "DeepSpeechRNN",

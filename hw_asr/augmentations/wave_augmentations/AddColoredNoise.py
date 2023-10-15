@@ -6,6 +6,7 @@ from hw_asr.augmentations.base import AugmentationBase
 
 class AddColoredNoise(AugmentationBase):
     def __init__(self, p, *args, **kwargs):
+        assert 0 <= p <= 1
         self.p = p
         self.aug_col = torch_audiomentations.AddColoredNoise(*args, **kwargs)
 

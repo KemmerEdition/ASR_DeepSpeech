@@ -1,13 +1,14 @@
 from hw_asr.augmentations.base import AugmentationBase
-import torchaudio
+import torch_audiomentations
 from torch import Tensor
 import numpy as np
 
 
 class PitchShift(AugmentationBase):
-    def __init__(self, p, sample_rate, n_steps, **kwargs):
+    def __init__(self, p, *args, **kwargs):
+        assert 0 <= p <= 1
         self.p = p
-        self.aug_pitch = torchaudio.transforms.PitchShift(sample_rate, n_steps)
+        self.aug_pitch = torch_audiomentations.PitchShift(*args, **kwargs)
 
     def __call__(self, data: Tensor):
         p_ = np.random.binomial(1, self.p)

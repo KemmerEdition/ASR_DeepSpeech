@@ -2,6 +2,7 @@ from torch import nn
 import torch.nn.functional as F
 from hw_asr.base import BaseModel
 
+
 class DeepSpeechRNN(BaseModel):
     def __init__(self, n_feats, n_class, fc_hidden=512, **batch):
         super().__init__(n_feats, n_class, **batch)
