@@ -5,7 +5,7 @@ import numpy as np
 
 
 class PitchShift(AugmentationBase):
-    def __int__(self, p, sample_rate, n_steps, *args, **kwargs):
+    def __init__(self, p, sample_rate, n_steps, **kwargs):
         self.p = p
         self.aug_pitch = torchaudio.transforms.PitchShift(sample_rate, n_steps)
 

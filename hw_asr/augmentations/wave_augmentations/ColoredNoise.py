@@ -5,7 +5,7 @@ from hw_asr.augmentations.base import AugmentationBase
 
 
 class ColoredNoise(AugmentationBase):
-    def __int__(self, p, *args, **kwargs):
+    def __init__(self, p, *args, **kwargs):
         self.p = p
         self.aug_col = torch_audiomentations.AddColoredNoise(*args, **kwargs)
 

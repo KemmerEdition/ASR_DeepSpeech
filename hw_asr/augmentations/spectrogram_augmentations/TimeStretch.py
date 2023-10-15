@@ -5,7 +5,7 @@ import numpy as np
 
 
 class TimeStretch(AugmentationBase):
-    def __int__(self, p, fix_rate, *args, **kwargs):
+    def __init__(self, p, fix_rate, *args, **kwargs):
         self.p = p
         self.fix_rate = fix_rate
         self.aug_time_str = torchaudio.transforms.TimeStretch(*args, **kwargs)

@@ -5,7 +5,7 @@ import numpy as np
 
 
 class FreqMask(AugmentationBase):
-    def __int__(self, p, freq_mask_param, *args, **kwargs):
+    def __init__(self, p, freq_mask_param, *args, **kwargs):
         self.p = p
         self.aug_freq = torchaudio.transforms.FrequencyMasking(freq_mask_param)
 

@@ -6,7 +6,6 @@
     "spectrogram": {
       "type": "MelSpectrogram",
       "args": {
-        "n_mels": 64
       }
     },
     "log_spec": true
@@ -18,7 +17,7 @@
   "arch": {
     "type": "DeepSpeechGRU",
     "args": {
-      "n_feats": 64,
+      "n_feats": 128,
       "fc_hidden": 512
     }
   },

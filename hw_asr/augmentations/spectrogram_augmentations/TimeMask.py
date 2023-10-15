@@ -5,7 +5,7 @@ import numpy as np
 
 
 class TimeMask(AugmentationBase):
-    def __int__(self, p, time_mask_param, *args, **kwargs):
+    def __init__(self, p, time_mask_param, *args, **kwargs):
         self.p = p
         self.aug_time_mask = torchaudio.transforms.TimeMasking(time_mask_param)
 

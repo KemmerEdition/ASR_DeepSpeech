@@ -8,7 +8,7 @@ from hw_asr.augmentations.base import AugmentationBase
 
 
 class Noise(AugmentationBase):
-    def __int__(self, p, noise_name, noise_level):
+    def __init__(self, p, noise_name, noise_level):
         self.p = p
         self.noise_level = torch.Tensor([noise_level])
         filename = librosa.ex(noise_name)

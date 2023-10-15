@@ -5,7 +5,7 @@ import numpy as np
 
 
 class Volume(AugmentationBase):
-    def __int__(self, p, gain, gain_type, *args, **kwargs):
+    def __init__(self, p, gain, gain_type, *args, **kwargs):
         self.p = p
         self.aug_vol = torchaudio.transforms.Vol(gain, gain_type)
 
