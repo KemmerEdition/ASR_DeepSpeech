@@ -23,7 +23,7 @@ class DeepSpeechGRU(BaseModel):
         self.hid = fc_hidden
         self.gru = nn.GRU(input_size=fc_hidden,
                             hidden_size=fc_hidden,
-                            num_layers=3,
+                            num_layers=4,
                             bias=True,
                             bidirectional=True)
 
