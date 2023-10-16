@@ -81,21 +81,9 @@
       }
     },
     {
-      "type": "BeamSearchLMMetricWER",
-      "args": {
-        "name": "WER (lm)"
-      }
-    },
-    {
       "type": "ArgmaxCERMetric",
       "args": {
         "name": "CER (argmax)"
-      }
-    },
-    {
-      "type": "BeamSearchLMMetricCER",
-      "args": {
-        "name": "CER (lm)"
       }
     }
   ],
