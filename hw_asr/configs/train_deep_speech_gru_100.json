@@ -37,11 +37,9 @@
           "type": "LibrispeechDataset",
           "args": {
             "part": "train-clean-100",
-            "max_audio_length": 50.0,
-            "max_text_length": 500,
+            "max_audio_length": 20.0,
+            "max_text_length": 400,
             "limit":-1
-
-
           }
 
         }
@@ -56,10 +54,21 @@
           "type": "LibrispeechDataset",
           "args": {
             "part": "dev-clean",
-            "max_audio_length": 50.0,
-            "max_text_length": 500,
+            "max_audio_length": 20.0,
+            "max_text_length": 400,
             "limit":-1
-
+          }
+        }
+      ]
+    },
+    "test_clean": {
+      "batch_size": 64,
+      "num_workers": 5,
+      "datasets": [
+        {
+          "type": "LibrispeechDataset",
+          "args": {
+            "part": "test-clean"
           }
         }
       ]
@@ -112,5 +121,5 @@
     "len_epoch": 150,
     "grad_norm_clip": 10
   },
-  "model_loaded": ""
+  "model_loaded": "hw_asr/gru_4numL_epoch84.pth"
 }
