@@ -30,15 +30,15 @@
   },
   "data": {
     "train": {
-      "batch_size": 32,
+      "batch_size": 64,
       "num_workers": 5,
       "datasets": [
         {
           "type": "LibrispeechDataset",
           "args": {
             "part": "train-clean-100",
-            "max_audio_length": 50.0,
-            "max_text_length": 500,
+            "max_audio_length": 35.0,
+            "max_text_length": 300,
             "limit":-1
 
 
@@ -49,15 +49,15 @@
       ]
     },
     "val": {
-      "batch_size": 32,
+      "batch_size": 64,
       "num_workers": 5,
       "datasets": [
         {
           "type": "LibrispeechDataset",
           "args": {
             "part": "dev-clean",
-            "max_audio_length": 50.0,
-            "max_text_length": 500,
+            "max_audio_length": 35.0,
+            "max_text_length": 300,
             "limit":-1
 
           }
