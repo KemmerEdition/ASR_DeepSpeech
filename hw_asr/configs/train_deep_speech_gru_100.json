@@ -77,7 +77,7 @@
   "optimizer": {
     "type": "AdamW",
     "args": {
-      "lr": 3e-4,
+      "lr": 0.00008675,
       "weight_decay": 1e-4
     }
   },
@@ -103,7 +103,7 @@
     "type": "OneCycleLR",
     "args": {
       "steps_per_epoch": 150,
-      "epochs": 101,
+      "epochs": 99,
       "anneal_strategy": "cos",
       "max_lr": 5e-4,
       "pct_start": 0.04
