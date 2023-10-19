@@ -1,0 +1,79 @@
+{
+  "name": "default_config",
+  "n_gpu": 1,
+  "preprocessing": {
+    "sr": 16000,
+    "spectrogram": {
+      "type": "MelSpectrogram",
+      "args": {
+          "n_mels": 64
+      }
+    },
+    "log_spec": true
+  },
+  "augmentations": {
+    "wave": [{"type": "Gain", "args": {"p": 0.1, "sample_rate": 16000}},
+             {"type": "PitchShift", "args": {"p": 0.1, "sample_rate": 16000}},
+             {"type": "Volume", "args": {"p":  0.1, "gain": 2.0, "gain_type": "amplitude"}},
+             {"type": "Noise", "args": {"p": 0.1, "noise_name": "trumpet", "noise_level": 20}},
+             {"type": "AddColoredNoise", "args": {"p": 0.1, "sample_rate": 16000}}],
+    "spectrogram": [{"type": "FrequencyMasking", "args": {"p": 0.1, "freq_mask_param": 15}},
+                    {"type": "TimeMasking", "args": {"p": 0.1, "time_mask_param": 25}}
+                    ]
+  },
+  "arch": {
+    "type": "DeepSpeechGRU",
+    "args": {
+      "n_feats": 64,
+      "fc_hidden": 512
+    }
+  },
+  "optimizer": {
+    "type": "AdamW",
+    "args": {
+      "lr": 3e-4,
+      "weight_decay": 1e-4
+    }
+  },
+  "loss": {
+    "type": "CTCLoss",
+    "args": {}
+  },
+  "metrics": [
+    {
+      "type": "ArgmaxWERMetric",
+      "args": {
+        "name": "WER (argmax)"
+      }
+    },
+    {
+      "type": "ArgmaxCERMetric",
+      "args": {
+        "name": "CER (argmax)"
+      }
+    }
+  ],
+  "lr_scheduler": {
+    "type": "OneCycleLR",
+    "args": {
+      "steps_per_epoch": 150,
+      "epochs": 99,
+      "anneal_strategy": "cos",
+      "max_lr": 5e-4,
+      "pct_start": 0.04
+    }
+  },
+  "trainer": {
+    "epochs": 100,
+    "save_dir": "saved/",
+    "save_period": 5,
+    "verbosity": 2,
+    "monitor": "min val_loss",
+    "early_stop": 100,
+    "visualize": "wandb",
+    "wandb_project": "asr_project",
+    "len_epoch": 150,
+    "grad_norm_clip": 10
+  },
+  "model_loaded": ""
+}
