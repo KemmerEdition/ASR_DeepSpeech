@@ -107,7 +107,9 @@ class CTCCharTextEncoder(CharTextEncoder):
         char_length, voc_size = probs.shape
         assert voc_size == len(self.ind2char)
 
-        decoder = self.beam_search.decode_beams(probs[:probs_length, :], beam_size)
-        hypos = [(i[0], i[-1]) for i in decoder]
+        hypos: List[Hypothesis] = []
+        decoders = self.beam_search.decode_beams(probs[:probs_length, :], beam_size)
+        for item in decoders:
+            hypos.append(Hypothesis(item[0], item[-1]))
 
         return sorted(hypos, key=lambda x: x.prob, reverse=True)

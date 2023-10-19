@@ -11,8 +11,9 @@ from hw_asr.trainer import Trainer
 from hw_asr.utils import ROOT_PATH
 from hw_asr.utils.object_loading import get_dataloaders
 from hw_asr.utils.parse_config import ConfigParser
+from hw_asr.metric.utils import calc_cer, calc_wer
 
-DEFAULT_CHECKPOINT_PATH = ROOT_PATH / "default_test_model" / "checkpoint.pth"
+DEFAULT_CHECKPOINT_PATH = ROOT_PATH / "checkpoint.pth"
 
 
 def main(config, out_file):
@@ -43,6 +44,10 @@ def main(config, out_file):
     model.eval()
 
     results = []
+    argmax_cer_preds = []
+    argmax_wer_preds = []
+    beam_search_lm_cers = []
+    beam_search_lm_wers = []
 
     with torch.no_grad():
         for batch_num, batch in enumerate(tqdm(dataloaders["test"])):
@@ -58,20 +63,50 @@ def main(config, out_file):
             )
             batch["probs"] = batch["log_probs"].exp().cpu()
             batch["argmax"] = batch["probs"].argmax(-1)
+            batch["log_probs"] = batch["log_probs"].cpu().numpy()
+            argmax_cer = []
+            argmax_wer = []
+            beam_lm_cers = []
+            beam_lm_wers = []
             for i in range(len(batch["text"])):
                 argmax = batch["argmax"][i]
                 argmax = argmax[: int(batch["log_probs_length"][i])]
+                beam_search_lm = text_encoder.ctc_beam_search_from_liba(batch["log_probs"][i], batch["log_probs_length"][i], beam_size=100)[0][0]
+                count_cer_argm = calc_cer(text_encoder.normalize_text(batch["text"][i]),
+                                          text_encoder.ctc_decode(argmax.cpu().numpy()))
+                count_wer_argm = calc_wer(text_encoder.normalize_text(batch["text"][i]),
+                                          text_encoder.ctc_decode(argmax.cpu().numpy()))
+                count_cer_bs_lm = calc_cer(text_encoder.normalize_text(batch["text"][i]), beam_search_lm)
+                count_wer_bs_lm = calc_wer(text_encoder.normalize_text(batch["text"][i]), beam_search_lm)
                 results.append(
                     {
-                        "ground_trurh": batch["text"][i],
+                        "ground_trurh": text_encoder.normalize_text(batch["text"][i]),
                         "pred_text_argmax": text_encoder.ctc_decode(argmax.cpu().numpy()),
-                        "pred_text_beam_search": text_encoder.ctc_beam_search(
-                            batch["probs"][i], batch["log_probs_length"][i], beam_size=100
-                        )[:10],
+                        "pred_text_beam_search_lm": beam_search_lm,
+                        "argmax cers": count_cer_argm,
+                        "argmax_wers": count_wer_argm,
+                        "beam_search_lm_cers": count_cer_bs_lm,
+                        "beam_search_lm_wers": count_wer_bs_lm
                     }
                 )
+                argmax_cer.append(count_cer_argm)
+                argmax_wer.append(count_wer_argm)
+                beam_lm_cers.append(count_cer_bs_lm)
+                beam_lm_wers.append(count_wer_bs_lm)
+            argmax_cer_preds.append(sum(argmax_cer) / len(argmax_cer))
+            argmax_wer_preds.append(sum(argmax_wer) / len(argmax_wer))
+            beam_search_lm_cers.append(sum(beam_lm_cers) / len(beam_lm_cers))
+            beam_search_lm_wers.append(sum(beam_lm_wers) / len(beam_lm_wers))
+
+    list_of_preds = []
+    list_of_preds.append({'argmax_cers_et_all': sum(argmax_cer_preds) / len(argmax_cer_preds) * 100})
+    list_of_preds.append({'argmax_wers_et_all': sum(argmax_wer_preds) / len(argmax_wer_preds) * 100})
+    list_of_preds.append({'beam_lm_cers_et_all': sum(beam_search_lm_cers) / len(beam_search_lm_cers) * 100})
+    list_of_preds.append({'beam_lm_wers_et_all': sum(beam_search_lm_wers) / len(beam_search_lm_wers) * 100})
+    list_of_preds.append(results)
+
     with Path(out_file).open("w") as f:
-        json.dump(results, f, indent=2)
+        json.dump(list_of_preds, f, indent=2)
 
 
 if __name__ == "__main__":
@@ -114,7 +149,7 @@ if __name__ == "__main__":
     args.add_argument(
         "-b",
         "--batch-size",
-        default=20,
+        default=5,
         type=int,
         help="Test dataset batch size",
     )
@@ -134,7 +169,7 @@ if __name__ == "__main__":
 
     # first, we need to obtain config with model parameters
     # we assume it is located with checkpoint in the same folder
-    model_config = Path(args.resume).parent / "config.json"
+    model_config = ROOT_PATH / "default_test_config.json"
     with model_config.open() as f:
         config = ConfigParser(json.load(f), resume=args.resume)
 
