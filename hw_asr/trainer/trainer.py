@@ -182,6 +182,7 @@ class Trainer(BaseTrainer):
             self._log_scalars(self.evaluation_metrics)
             self._log_predictions(**batch)
             self._log_spectrogram(batch["spectrogram"])
+            self._log_audio(batch["audio"], **batch)
 
         # add histogram of model parameters to the tensorboard
         for name, p in self.model.named_parameters():
@@ -259,3 +260,13 @@ class Trainer(BaseTrainer):
             return
         for metric_name in metric_tracker.keys():
             self.writer.add_scalar(f"{metric_name}", metric_tracker.avg(metric_name))
+
+    def _log_audio(self, audio_batch, log_probs, log_probs_length, audio_path, examples_to_log=3, *args, **kwargs):
+        argmax_inds = log_probs.cpu().argmax(-1).numpy()
+        argmax_inds = [inds[: int(ind_len)] for inds, ind_len in zip(argmax_inds, log_probs_length.numpy())]
+        argmax_texts_raw = [self.text_encoder.decode(inds) for inds in argmax_inds]
+        argmax_texts = [self.text_encoder.ctc_decode(inds) for inds in argmax_inds]
+        for i in range(examples_to_log):
+            self.writer.add_audio(
+                'audio', audio_batch[i], sample_rate=16000, text=argmax_texts[i]
+            )
