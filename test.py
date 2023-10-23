@@ -169,7 +169,7 @@ if __name__ == "__main__":
 
     # first, we need to obtain config with model parameters
     # we assume it is located with checkpoint in the same folder
-    model_config = ROOT_PATH / "default_test_config.json"
+    model_config = ROOT_PATH / "default_test_config_with_test_clean_path.json"
     with model_config.open() as f:
         config = ConfigParser(json.load(f), resume=args.resume)
 
