@@ -60,26 +60,6 @@ class CTCCharTextEncoder(CharTextEncoder):
 
         return state_list[0][0][0]
 
-        # hypotesis = [(i, v) for (i, y), v in sorted(state.items(), key=lambda x: -x[-1])]
-        # list_final = []
-        # for i in hypotesis:
-        #     list_final.append(Hypothesis(i[0], i[1]))
-        #
-        # create_collect = dict()
-        #
-        # probs_list = list(sorted([((pref + last_char).strip().replace(self.EMPTY_TOK, ''), frame)
-        #                           for (pref, last_char), frame in state.items()],
-        #                          key=lambda x: -x[1]))
-        #
-        # for (line, frame) in probs_list:
-        #     if line not in create_collect:
-        #         create_collect[line] = frame
-        #     else: create_collect[line] += frame
-        # list_of_dict = [(num, create_collect[num]) for num in create_collect]
-        # print(create_collect)
-        # return [(num, create_collect[num]) for num in create_collect]
-        # return sorted(hypos, key=lambda x: x.prob, reverse=True)
-
     def extend_and_merge(self, state, frame):
         new_state = defaultdict(float)
         for ind_proba, proba in enumerate(frame):
@@ -87,12 +67,6 @@ class CTCCharTextEncoder(CharTextEncoder):
             for (pref, last_char), state_prob in state.items():
                 prefix = pref if prob == last_char else (pref + prob).replace(self.EMPTY_TOK, "")
                 new_state[(prefix, prob)] += proba * state_prob
-        # for (pref, last_char), pref_proba in state.items():
-        #     for i in range(len(frame)):
-        #         if ind2char[i] == last_char:
-        #             new_state[(pref, last_char)] += pref_proba * frame[i]
-        #         else: new_state[((pref, last_char).replace(self.EMPTY_TOK, ''),
-        #                          ind2char[i])] += pref_proba * frame[i]
 
         return new_state
 

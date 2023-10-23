@@ -1,25 +1,6 @@
 from torch import nn
 from torch.nn import Sequential
 from hw_asr.base import BaseModel
-
-
-# class BatchRNN(nn.Module):
-#     def __int__(self, input_size, hidden_size):
-#         super(BatchRNN).__int__()
-#         self.input_size = input_size
-#         self.hidden_size = hidden_size
-#         self.batch_norm = nn.BatchNorm1d(hidden_size)
-#         self.rnn = nn.RNN(input_size=self.input_size, hidden_size=self.hidden_size, bidirectional=True)
-#
-#     def forward(self, x, h=None):
-#         x, h = self.rnn(x, h)
-#         if self.bidirectional:
-#             x = x.view(x.size(0), x.size(1), 2, -1).sum(2)
-#         t, n = x.size(0), x.size(1)
-#         x = x.view(t * n, -1)
-#         x = self.module(x)
-#         x = x.view(t, n, -1)
-#         return x, h
 # Делала упрощенную версию того, что представляет архитектура по ссылке ниже
 # https://github.com/SeanNaren/deepspeech.pytorch/blob/master/deepspeech_pytorch/model.py
 
