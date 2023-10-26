@@ -19,6 +19,11 @@ Download requirements and checkpoint of my model
    !conda install -y gdown
    !gdown --id 1IaNeaaOSjUYW8cmKNpRkkkCwxaz5Bcid
    ```
+## Train
+   ```shell
+   python -m train \
+      -c hw_asr/configs/train_deep_speech_gru_100.json
+   ```
 ## Test
    ```shell
    python -m test \
