@@ -9,7 +9,7 @@ Clone repository
 Maybe then you need to change directory
 
    ```shell
-   cd /content/asr_project_template
+   %cd /content/asr_project_template
    ```
 Download requirements and checkpoint of my model
    ```shell
